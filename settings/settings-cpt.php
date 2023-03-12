@@ -91,6 +91,26 @@ class PLL_Settings_CPT extends PLL_Settings_Module {
 	}
 
 	/**
+	 * Get registered post types
+	 *
+	 * @return string[]
+	 */
+	public function get_post_types()
+	{
+		return $this->post_types;
+	}
+
+	/**
+	 * Get registered taxonomies
+	 *
+	 * @return string[]
+	 */
+	public function get_taxonomies()
+	{
+		return $this->taxonomies;
+	}
+
+	/**
 	 * Displays the settings form
 	 *
 	 * @since 1.8
@@ -165,7 +185,7 @@ class PLL_Settings_CPT extends PLL_Settings_Module {
 	 *
 	 * @param array $options
 	 */
-	protected function update( $options ) {
+	public function update( $options ) {
 		$newoptions = array();
 
 		foreach ( array( 'post_types', 'taxonomies' ) as $key ) {
