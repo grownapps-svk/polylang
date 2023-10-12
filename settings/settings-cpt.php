@@ -45,11 +45,11 @@ class PLL_Settings_CPT extends PLL_Settings_Module {
 	private $disabled_taxonomies;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 *
 	 * @since 1.8
 	 *
-	 * @param object $polylang polylang object
+	 * @param object $polylang The Polylang object.
 	 */
 	public function __construct( &$polylang ) {
 		parent::__construct(
@@ -89,8 +89,8 @@ class PLL_Settings_CPT extends PLL_Settings_Module {
 	public function is_active() {
 		return ! empty( $this->post_types ) || ! empty( $this->taxonomies );
 	}
-
-	/**
+    
+    /**
 	 * Get registered post types
 	 *
 	 * @return string[]
@@ -108,6 +108,23 @@ class PLL_Settings_CPT extends PLL_Settings_Module {
 	public function get_taxonomies()
 	{
 		return $this->taxonomies;
+	}
+
+	/**
+	 * Sanitizes the settings before saving.
+	 *
+	 * @since 1.8
+	 *
+	 * @param array $options Unsanitized options to save.
+	 * @return array
+	 */
+	public function update( $options ) {
+		$newoptions = array();
+
+		foreach ( array( 'post_types', 'taxonomies' ) as $key ) {
+			$newoptions[ $key ] = empty( $options[ $key ] ) ? array() : array_keys( $options[ $key ], 1 );
+		}
+		return $newoptions; // Take care to return only validated options.
 	}
 
 	/**
@@ -176,21 +193,5 @@ class PLL_Settings_CPT extends PLL_Settings_Module {
 			<p class="description"><?php esc_html_e( 'Activate languages and translations for custom taxonomies.', 'polylang' ); ?></p>
 			<?php
 		}
-	}
-
-	/**
-	 * Sanitizes the settings before saving
-	 *
-	 * @since 1.8
-	 *
-	 * @param array $options
-	 */
-	public function update( $options ) {
-		$newoptions = array();
-
-		foreach ( array( 'post_types', 'taxonomies' ) as $key ) {
-			$newoptions[ $key ] = empty( $options[ $key ] ) ? array() : array_keys( $options[ $key ], 1 );
-		}
-		return $newoptions; // Take care to return only validated options
 	}
 }
